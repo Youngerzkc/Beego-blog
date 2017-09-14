@@ -1,0 +1,46 @@
+{{template "header"}}
+        <title>登录-我的 blog 博客</title>
+    </head>
+    <body>
+            <div class="container" style="width:500px">
+                <!--表单上传-->
+                <form method="post" action="/login" enctype="multipart/form-data" >
+                    <div class="form-group">
+                        <label >帐号</label>
+                        <input id="uname" class="form-control" placeholder="Enter account" name="uname">
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input id="pwd" type="password" class="form-control" placeholder="Password" name="pwd">
+                    </div>
+                    <div class="checkbox">
+                        <label> <input type="checkbox" name="autoLogin"> 自动登录</label>
+                    </div>
+                    <!--验证登录信息是否有字符输入？？-->
+                    <button  type="submit" class="btn btn-default" onclick="checkInput();">登录</button>
+                    <!--返回主页面？？-->
+                    <button class="btn btn-default" onclick="backToHome();"> 返回</button>
+                </form>
+                    
+                <script type="text/javascript">
+                    function checkInput() {
+                      var uname=document.getElementById("uname");
+                        if (uname.value==''){
+                            alert("请输入帐号");
+                            return false;
+                        }
+                       var pwd=document.getElementById("pwd");
+                        if (pwd.value==''){
+                            alert("请输入密码");
+                            return false;
+                        }
+                        return true
+                    }
+                    function backToHome(){
+                        window.location.href="/"
+                        return true
+                    }
+                </script>
+            </div>
+    </body>
+</html>

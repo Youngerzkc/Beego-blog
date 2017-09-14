@@ -1,0 +1,49 @@
+{{template "header"}}
+<title>文章---我的beego 博客</title>
+<style>
+  .contentClass {
+    margin-top: 16px;
+  }
+
+  .loginBut {
+    margin-top: -50px;
+    margin-right: 40px;
+  }
+</style>
+</head>
+
+<body>
+  {{template "navbar" .}}
+  <!--.的引用，显示高亮-->
+  <div class="container contentClass">
+    <h2>添加文章</h2>
+    <form action="/topic" method="post">
+      <div class="from-group">
+        <div> 
+          <div>
+            <label for=""> 文章标题：</label>
+          </div>
+          <input type="text" name="title" style="width:508px"  class="from-control">
+        </div>
+        <div class="from-group">
+          <div>
+             <label > 文章分类：</label>
+          </div>
+          <input type="" name="category" value="" style="width:508px" class="from-control">
+        </div>
+        <label >文章内容：</label>
+      </div>
+      <div class="from-group">
+
+      <textarea rows="10" cols="60" name="content" class="from-control"></textarea>
+      </div>
+      <button type="submit" class="btn btn-default">添加文章 </button>
+    </form>
+  </div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js">
+
+</script>
+
+</html>

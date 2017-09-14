@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>border-collapse_CSS参考手册_web前端开发参考手册系列</title>
+    <meta name="author" content="Joy Du(飘零雾雨), dooyoe@gmail.com" />
+    <meta name="copyright" content="www.doyoe.com" />
+    <style>
+      h1 {
+        font-size: 16px;
+        font-family: Arial;
+      }
+
+      .separate {
+        border-collapse: separate;
+      }
+
+      .collapse {
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>collapse: 相邻边被合并</h1>
+    <table border="0" class="collapse">
+      <tbody>
+        <tr>
+          <td>合并边框</td>
+          <td>合并边框</td>
+          <td>合并边框</td>
+        </tr>
+        <tr>
+          <td>合并边框</td>
+          <td>合并边框</td>
+          <td>合并边框</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+
+</html>

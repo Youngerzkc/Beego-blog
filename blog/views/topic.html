@@ -1,0 +1,70 @@
+{{template "header"}}
+    <title>文章---我的beego 博客</title>
+    <style>
+      .contentClass {
+        margin-top: 16px;
+      }
+      .loginBut{
+        margin-top: -50px;
+        margin-right: 40px;
+      }
+      .art{
+        margin-top:66px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+{{template "navbar" .}}
+<!--.的引用，显示高亮-->
+    <div class="container contentClass" >
+    <div class="art">
+       <h2>文章列表</h2>
+    </div>
+    
+     <a href="/topic/add" class="btn btn-default" > 添加文章</a>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>文章名称</th>
+          <th>最后更新</th>
+          <th>浏览</th>
+          <th>回复数</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {{range .Topics}}
+        <tr>
+            <td>{{.Id}} </td>
+            <td>{{.Title}} </td>
+            <td>{{.Updated}} </td>
+            <td>{{.Views}} </td>
+            <td>{{.ReplyCount}} </td>
+            <td>
+                <a href="/topic/cat/{{.Id}}">查看</a>
+            </td>
+            <td>
+              <a href="/topic/modify?tid={{.Id}}">修改</a>
+            </td>
+            <td>
+          <a href="/topic/delete?tid={{.Id}}">删除</a>
+           </td>
+        </tr>
+
+        {{end}}
+      </tbody>
+
+    </table>
+    </div>
+  </body>
+  <!--<script type="text/javascript" src="http://cdn.">-->
+  <!--</script>-->
+  <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.min.js">
+    
+  </script>
+</html>

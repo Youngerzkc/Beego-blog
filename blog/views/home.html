@@ -1,0 +1,50 @@
+{{template "header" .}}
+<title>首页×××我的beego 博客</title>
+<style>
+  .contentClass {
+    margin-top: 16px;
+  }
+
+  .loginBut {
+    margin-top: -50px;
+    margin-right: 40px;
+  }
+  .list-right{
+    margin-top:16px;
+    float: right;
+  }
+</style>
+</head>
+
+<body>
+  {{template "navbar" .}}
+  <!--.的引用，显示高亮-->
+  <div class="container contentClass">
+    <div class="col-md-9">
+      {{range .Topics}}
+      <div class="page-header">
+        <h3> <a href="/topic/cat/{{.Id}}"> {{.Title}} </a>  </h3>
+        <h6 class="text-muted"> 文章发表与{{.Created}} ,共有{{.Views}}次浏览 ，共计{{.ReplyCount}}个评论 </h6>
+        <p>{{.Content}}</p>
+        <p>hello every ,thanks!谢谢大家观看 </p>
+      </div>
+      {{end}}
+    </div>
+  <div class="list-right" >
+  <h3>文章分类</h3>
+  <ul>
+    {{range .Categories}}
+    <li><a href="/?cate={{.Title}}">{{.Title}}</a></li>
+    {{end}}
+  </ul>
+</div>
+  </div>
+  <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js">
+    
+  </script>
+  <script type="text/javascript" src="../static/js/bootstrap.min.js">
+    
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{{define "navbar" }}
+    <!--<div class="navbar navbar-default navbar-fixed-top">-->
+      <div class="container">
+        <a class="navbar-brand" href="/">我的博客</a>
+        <ul class="nav nav-tabs">
+          <li {{if .IsHome}} class="active" {{end}} ><a href="/">首页</a> </li>
+          <li {{if .IsCategory}} class="active" {{end}}  ><a href="/cate">分类</a></li>
+          <li {{if .IsTopic}} class="active"{{end}} ><a href="/topic">文章</a></li>
+        </ul>
+      </div>
+    <!--</div>-->
+    <div class='loginBut'>
+      <div class="pull-right">
+            <ul class="nav navbar-nav">
+              {{if .IsLogin}}
+              <!--<li><a href="/login?exit=true">退出</a></li>-->
+              <li><a href="/login?exit=true">退出</a></li> 
+              <!--加参数退出有问题，即点击多次的时候才能匹配到路由执行相应的get方法-->
+              {{else}}
+              <li><a href="/login">管理员登录</a></li>
+              {{end}}
+            </ul>
+          </div>
+    </div>
+    
+{{end}}    
