@@ -134,7 +134,19 @@ func  AddTopic( title ,category,content string ) error  {
 		fmt.Println("insert topic failed.")
 		return err
 	}
-	return nil
+	cate:=new(Category)
+	cate.Title=category
+	err=o.Read(cate,"Title")
+	if err==nil{
+		fmt.Println("查到这个分类了")
+	}else{
+		// 查询不到分类，插入分类。
+		AddCategory(category)
+		o.Read(cate,"Title")
+	}
+	cate.TopicCount++
+	_,err=o.Update(cate)
+	return err
 }
 func GetTopic(tid string ) (*Topic,error)  {
 	tidNum,err:=strconv.ParseInt(tid, 10,64)
@@ -177,8 +189,34 @@ func  ModifyTopic(tid , title ,category,content string) error  {
 	}
 	o:=orm.NewOrm()
 	// cate:=&Category{Title:category}
+	cate:=&Category{
+		Title:category,
+	}
+	errCate:=o.Read(cate,"title")
 	topic:=&Topic{Id:tidNum}
 	if o.Read(topic)==nil{
+		// 对应的文章标题，内容进行修改了。若只修改了分类呢？
+		if topic.Category!=category{
+			// 只改修改分类的情况处理！
+			// 1.若该分类不存在 2.该文类已存在
+			if errCate!=nil{
+				AddCategory(category)
+				o.Read(cate,"title")
+				cate.TopicCount++
+			}else{
+				cate.TopicCount++
+			}
+			// 原分类文章数减1
+				o.Update(cate)
+				cate.Title=topic.Category
+				o.Read(cate,"title")
+				cate.TopicCount--
+		}else if topic.Title!=title||topic.Content!=content && topic.Category==category{
+			// 类别不变，文章标题和内容改变！
+			cate.TopicCount++
+		}else  {
+			// 分章未进行修改
+		}
 		topic.Title=title
 		topic.Content=content
 		topic.Id=tidNum
@@ -186,7 +224,8 @@ func  ModifyTopic(tid , title ,category,content string) error  {
 		topic.Updated=time.Now()
 		o.Update(topic)
 	}
-	return nil
+	_,err=o.Update(cate)
+	return err
 }
 func DeleteTopic(tid string) error  {
 	fmt.Println("删除文章数")
@@ -200,6 +239,16 @@ func DeleteTopic(tid string) error  {
 	if err!=nil{
 		return err
 	}
+	cate:=new(Category)
+	cate.Title=topic.Category
+	err=o.Read(cate,"Title")
+	if err==nil{
+		cate.TopicCount--
+		o.Update(cate)
+	}else{
+		// 不存在这个分类
+		return err
+	}
 	fmt.Println("查到文章数椐了")
 	_,err=o.Delete(topic)
 	if err!=nil{
@@ -208,9 +257,8 @@ func DeleteTopic(tid string) error  {
 	}
 	return nil
 }
-var i int64 =0
-func AddReply(tid,name,content string) error  {
-	 i++;
+func AddReply(tid,name,content string) error  {	 
+	 o:=orm.NewOrm()
 	tidNum,err:=strconv.ParseInt(tid,10,64)
 	if err!=nil{
 		return err
@@ -221,9 +269,15 @@ func AddReply(tid,name,content string) error  {
 		Created:time.Now(),
 		Content:content,
 	}
-	reply.CommentCount=i
-	o:=orm.NewOrm()
 	_,err=o.Insert(reply)
+	if err==nil{
+	  err=o.Read(reply,"Tid")
+		if err==nil{
+			fmt.Println("找到这篇文章了")
+		reply.CommentCount++;
+		}
+		_,err=o.Update(reply)
+	}
 	return err
 }
 func GetAllRelies(tid string)(replies []*Comment,err error )  {
@@ -243,8 +297,9 @@ func DeleteReply(rid string) error {
 		return err
 	}
 	o:=orm.NewOrm()
-	i--
 	reply:=&Comment{Id:ridNum}
+	o.Read(reply,"id")
+	reply.CommentCount--
 	_,err=o.Delete(reply)
 	return err
 }
@@ -261,11 +316,12 @@ func RegisterAccount(name string,pwd string) error{
 		if err!=nil{
 			fmt.Println("注册失败")
 			return err
-		}
+			}
 		return nil
 	}else{
-		fmt.Println("该帐号已存在，请重新注册")
-	}
+			fmt.Println("该帐号已存在，请重新注册")
+		}
+
 		return err
 }
 func CheckLogin(name string,pwd string) error{
@@ -286,11 +342,3 @@ func CheckLogin(name string,pwd string) error{
 	}
 	return nil
 }
-
-
-
-
-
-
-
-

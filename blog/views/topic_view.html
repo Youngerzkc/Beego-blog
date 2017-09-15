@@ -1,84 +1,87 @@
 <!DOCTYPE>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css">
-        <title>{{.Topic.Title}}---我的beego 博客</title>
-        <!--留意此处的写法-->
-        <style>
-            .contentClass {
-                margin-top: 16px;
-            }
-            .loginBut {
-                margin-top: -50px;
-                margin-right: 40px;
-            }
-            .title{
-                margin-top: 66px;
-                text-align: center;
-            }
-        </style>
-    </head>
 
-    <body>
+<head>
+    <meta charset="utf-8">
+    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <title>{{.Topic.Title}}---我的beego 博客</title>
+    <!--留意此处的写法-->
+    <style>
+        .contentClass {
+            margin-top: 16px;
+        }
 
-        {{ template "navbar" .}}
+        .loginBut {
+            margin-top: -50px;
+            margin-right: 40px;
+        }
 
-        <div class="container">
-            {{with .Topic}}
-            <div class="title"> 
-                <a href="/topic/cat/{{.Id}}"> <h1>{{.Title}}</h1> </a>
-            </div>
-           
-            <h3>文章内容</h3>
-            <p> {{.Content}} </p>
-            {{end}}
-            <!--变量赋值方法-->
-        {{$tid:=.Topic.Id}}
-            {{$IsLogin:=.IsLogin}} {{range .Replies}} 
-            第{{.CommentCount}}个评论，时间 {{.Created}}<br>
-             昵称：{{.Name}} 评论内容：<b> {{.Content}}</b><br> 
-             {{if $IsLogin}}
-            <!--<a href="/www.baidu.com"> 跳转 </a>-->
-            <a href="/reply/delete?rid={{.Id}}&tid={{$tid}}"> 删除评论</a>
-            <br> {{end}} {{end}}
-            <h3> 文本回复 </h3>
-            <form action="/reply/add" method="post">
-                <input type="hidden" name="tid" value="{{.Topic.Id}}">
-                <div class="from-group">
-                    <label for="">显示昵称：</label>
-                    <input type="text" name="nickname" id="nametext" placeholder="请输入昵称:" value="">
-                </div>
-                <div class="from-group">
-                    <label for="">评论内容：</label> <br>
-                     <textarea rows="5" cols="30" name="content" placeholder="请输入您的精彩评论！！！" id="textcontent" class="from-control"></textarea>
-                </div>
-                <button type="" class="btn btn-default" onclick="return checkSubmit()" >提交 </button>
-            </form>
+        .title {
+            margin-top: 66px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    {{ template "navbar" .}}
+
+    <div class="container">
+        {{with .Topic}}
+        <div class="title">
+            <a href="/topic/cat/{{.Id}}">
+                <h1>{{.Title}}</h1>
+            </a>
         </div>
-            <script>
-                function checkSubmit(){
-                var nametext=document.getElementById("nametext");
-                var textcontent=document.getElementById("textcontent");
-                if (nametext.value==""){
-                    alert("请输入昵称");
-                    return false;
-                    }
-                if (textcontent.value==""){
-                    alert("评论内容为空，请重新输入评论内容");
-                    return false;
-                }
-                return true;     
-                }
-                
-            </script>
-    </body>
 
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js">
+        <h3>文章内容</h3>
+        <p> {{.Content}} </p>
+        {{end}}
+        <!--变量赋值方法-->
+        {{$tid:=.Topic.Id}} {{$IsLogin:=.IsLogin}} {{range .Replies}}
+        <!--此处存在BUG，-->
+        <!--问题是模板变量的赋值。以及变量的运算操作-->
+        第{{.CommentCount}}个评论，时间 {{.Created}}<br> 昵称：{{.Name}} 评论内容：<b> {{.Content}}</b><br> {{if $IsLogin}}
+        <!--<a href="/www.baidu.com"> 跳转 </a>-->
+        <a href="/reply/delete?rid={{.Id}}&tid={{$tid}}"> 删除评论</a>
+        <br> {{end}} {{end}}
+        <h3> 文本回复 </h3>
+        <form action="/reply/add" method="post">
+            <input type="hidden" name="tid" value="{{.Topic.Id}}">
+            <div class="from-group">
+                <label for="">显示昵称： </label>
+                <input type="text" name="nickname" id="nametext" placeholder="请输入昵称:" value="">
+            </div>
+            <div class="from-group">
+                <label for="">评论内容：</label> <br>
+                <textarea rows="5" cols="30" name="content" placeholder="请输入您的精彩评论！！！" id="textcontent" class="from-control"></textarea>
+            </div>
+            <button type="" class="btn btn-default" onclick="return checkSubmit()">提交 </button>
+        </form>
+    </div>
+    <script>
+        function checkSubmit() {
+            var nametext = document.getElementById("nametext");
+            var textcontent = document.getElementById("textcontent");
+            if (nametext.value == "") {
+                alert("请输入昵称");
+                return false;
+            }
+            if (textcontent.value == "") {
+                alert("评论内容为空，请重新输入评论内容");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
 
-    </script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js">
-        // 注意src的路径问题。
-    </script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js">
+
+</script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js">
+    // 注意src的路径问题。
+</script>
 
 </html>
